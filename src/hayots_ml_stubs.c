@@ -62,12 +62,12 @@
   return json_command;
 }
 
--(void)send_reply
+-(void)send_reply:(NSDictionary*)reply_dict
 {
   NSError *error = nil;
   NSData *d =
     [NSJSONSerialization
-      dataWithJSONObject:@{@"foo": @"bar"} options:0 error:&error];
+      dataWithJSONObject:reply_dict options:0 error:&error];
   uint8_t buffer[4];
   *buffer = (int)[d length];
   [self.writer write:buffer maxLength:4];
@@ -80,7 +80,7 @@
   switch (eventCode) {
   case NSStreamEventHasBytesAvailable: {
     NSLog(@"As a dict: %@", [self read_command]);
-    [self send_reply];
+    [self send_reply:@{@"Foo":@"bar"}];
     break;
   }
   case NSStreamEventEndEncountered:
