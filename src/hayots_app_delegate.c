@@ -1,6 +1,8 @@
 // -*- objc -*-
 
 #import <Cocoa/Cocoa.h>
+#import <Foundation/Foundation.h>
+
 #import <iostream>
 
 #include "hayots_app_delegate.h"
