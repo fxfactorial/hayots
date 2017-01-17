@@ -11,11 +11,8 @@
 -(instancetype)initWithFrame:(NSRect)f
 {
   if ((self = [super initWithFrame:f])) {
-    std::cout << "Created\n";
     [self setup_menus];
-    std::cout << "Made menus\n";
     [self setup_main_interface];
-    std::cout << "Finished main interface\n";
   }
   return self;
 }
@@ -57,7 +54,6 @@
   [menu_bar addItem:app_item];
   [app_item setSubmenu:app_menu];
   [NSApp setMainMenu:menu_bar];
-
 }
 
 -(void)setup_main_interface

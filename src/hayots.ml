@@ -56,6 +56,12 @@ let () =
       hayots#receive_reply >>= fun reply ->
       Lwt_io.printlf "Reply: %s" reply >>= fun () ->
       Lwt_io.flush_all () >>= fun () ->
+
+      let utop = new Service.utop in
+
+      utop#read_all >>= fun () ->
+      Lwt_io.printl "After utop" >>= fun () ->
+
       forever ()
     | _ -> assert false
   )
