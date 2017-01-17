@@ -1,0 +1,36 @@
+# -*- conf -*- 
+OASISFormat:  0.4
+OCamlVersion: >= 4.04.0
+Name:         hayots
+Version:      0.0.1
+Maintainers:  Edgar Aroutiounian
+Homepage:     https://github.com/fxfactorial/hayots
+Synopsis:     OCaml IDE on OS X
+Authors:      Edgar Aroutiounian <edgar.factorial@gmail.com>
+License:      BSD-3-clause
+Plugins:      META (0.4), DevFiles (0.4)
+AlphaFeatures: ocamlbuild_more_args
+
+Description: OCaml IDE on OS X
+
+Executable hayots
+  Build$: system(macosx)
+  Path: src
+  install:true
+  BuildTools:ocamlbuild
+  MainIs: hayots.ml
+  NativeOpt: -g -w +a-4-40..42-44-45-48
+  CompiledObject: native
+  CCOpt:
+    -g -Wall -ObjC++ -std=c++14 -stdlib=libc++
+
+  CCLib: -lc++ -framework Foundation -framework Appkit 
+  CSources:
+    hayots_ide.h,
+    hayots_app_delegate.h,
+    hayots_ide.c,
+    hayots_ml_stubs.c,
+    hayots_app_delegate.c
+  BuildDepends:
+    lwt.unix, cmdliner, yojson, bos, 
+    unix, lwt.preemptive, threads
