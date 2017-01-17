@@ -18,8 +18,6 @@
 
 #import "hayots_app_delegate.h"
 
-#define NSApp_val(v) (NSApplication*)Field(v, 0)
-
 @interface Dispatcher : NSObject <NSStreamDelegate>
 
 @property (nonatomic, strong) NSApplication *app;
@@ -50,12 +48,23 @@
 
 -(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode;
 {
+  NSError *error = nil;
+
   switch (eventCode) {
-  case NSStreamEventHasBytesAvailable:
-    NSLog(@"Some data available for reading");
-    while ([self.reader hasBytesAvailable]) {
-      // [self.reader read:(nonnull uint8_t *) maxLength:(NSUInteger)]
-    }
+  case NSStreamEventHasBytesAvailable: {
+    uint8_t read_length;
+
+    [self.reader read:&read_length maxLength:1];
+    uint8_t buffer[read_length];
+    [self.reader read:buffer maxLength:read_length];
+    NSDictionary *json_command =
+      [NSJSONSerialization
+          JSONObjectWithData:[NSData dataWithBytes:buffer length:read_length]
+                     options:0
+                       error:&error];
+    NSLog(@"As a dict: %@", json_command);
+    break;
+  }
   case NSStreamEventEndEncountered:
     NSLog(@"Client disconnected");
     break;
