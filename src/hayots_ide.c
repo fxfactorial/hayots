@@ -61,7 +61,8 @@
   // NSTextView *v = [[NSTextView alloc] init];
   // [v setTextColor:[NSColor greenColor]];
   // [self addSubview:v];
-
+  // auto fr = self.frame;
+  // std::cout << [NSStringFromRect(fr) UTF8String] << "\n";
   NSTextField *f = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 50, 50)];
   f.stringValue = @"Hello world";
   [self addSubview:f];

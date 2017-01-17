@@ -30,7 +30,12 @@ Executable hayots
     -fno-optimize-sibling-calls
     -fsanitize=address
   CCLib:
-    -lc++ -framework Foundation -framework Appkit 
+    -lc++
+    # This needs to come from setup.ml Environment var
+    -F$(PWD)
+    -framework Foundation
+    -framework Appkit
+    # -framework MGSFragaria
   CSources:
     hayots_ide.h,
     hayots_app_delegate.h,
