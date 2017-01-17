@@ -1,7 +1,6 @@
 // -*- objc -*-
 
 #import <Cocoa/Cocoa.h>
-#import <Foundation/Foundation.h>
 
 #import <iostream>
 
@@ -12,12 +11,21 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)a_notification
 {
-  int flags =
-    NSWindowStyleMaskTitled
-    | NSWindowStyleMaskResizable
-    | NSWindowStyleMaskUnifiedTitleAndToolbar
-    | NSWindowStyleMaskClosable
-    | NSWindowStyleMaskMiniaturizable;
+  int flags = 0;
+  // Deprecated but works
+  flags = NSTitledWindowMask
+    | NSResizableWindowMask
+    | NSUnifiedTitleAndToolbarWindowMask
+    | NSClosableWindowMask
+    | NSMiniaturizableWindowMask;
+
+  // For the future
+  // flags =
+  //   NSWindowStyleMaskTitled
+  //   | NSWindowStyleMaskResizable
+  //   | NSWindowStyleMaskUnifiedTitleAndToolbar
+  //   | NSWindowStyleMaskClosable
+  //   | NSWindowStyleMaskMiniaturizable;
 
   auto screen_frame = [[NSScreen mainScreen] frame];
   self.main_window =
