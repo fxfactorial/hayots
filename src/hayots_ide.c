@@ -67,7 +67,7 @@
   [fragaria setObject:self forKey:MGSFODelegate];
   [fragaria setObject:@"Objective Caml" forKey:MGSFOSyntaxDefinitionName];
   [fragaria embedInView:self];
-  [fragaria setString:@"(* Hayots OCaml IDE *)"];
+  [fragaria setString:@"(* Hayots OCaml IDE *)\nlet () = print_endline \"Hello World\""];
 }
 
 -(void)speak_test
