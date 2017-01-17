@@ -25,7 +25,8 @@ class hayots sock = object
     )
 
   method receive_reply = Lwt_io.(
-      read_int in_channel >>= fun reply_length ->
+      Lwt_io.read_char in_channel >>= fun chr ->
+      let reply_length = Char.code chr in
       let buffer = Bytes.create reply_length in
       read_into_exactly in_channel buffer 0 reply_length >>= fun () ->
       Lwt_io.flush_all () >>= fun () ->
@@ -52,8 +53,8 @@ let () =
       Lwt_unix.sleep 1.5 >>= fun () ->
       let hayots = new hayots parent_sock in
       hayots#send_message {|{"command":"something"}|} >>= fun () ->
-      Lwt_io.printlf "Sent message, now receive" >>= fun () ->
       hayots#receive_reply >>= fun reply ->
+
       Lwt_io.printlf "Reply: %s" reply >>= fun () ->
       Lwt_io.flush_all () >>= fun () ->
       forever ()

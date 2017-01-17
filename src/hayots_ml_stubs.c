@@ -64,19 +64,23 @@
 
 -(void)send_reply:(NSDictionary*)reply_dict
 {
+  // Error is limited to 255 characters
   NSError *error = nil;
   NSData *d =
     [NSJSONSerialization
       dataWithJSONObject:reply_dict options:0 error:&error];
-  uint8_t buffer[4];
+
+  uint8_t buffer[sizeof(int)];
   *buffer = (int)[d length];
-  [self.writer write:buffer maxLength:4];
-  [self.writer write:(const uint8_t * _Nonnull)[d bytes] maxLength:[d length]];
+
+  [self.writer write:buffer maxLength:1];
+
+  [self.writer write:(const uint8_t * _Nonnull)[d bytes]
+	   maxLength:[d length]];
 }
 
 -(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode;
 {
-
   switch (eventCode) {
   case NSStreamEventHasBytesAvailable: {
     NSLog(@"As a dict: %@", [self read_command]);

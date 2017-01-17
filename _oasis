@@ -19,12 +19,18 @@ Executable hayots
   install:true
   BuildTools:ocamlbuild
   MainIs: hayots.ml
-  NativeOpt: -g -w +a-4-40..42-44-45-48
+  NativeOpt:
+    -g -w +a-4-40..42-44-45-48
+    -cclib -fsanitize=address -ccopt -fsanitize=address
   CompiledObject: native
   CCOpt:
     -g -Wall -ObjC++ -std=c++14 -stdlib=libc++
-
-  CCLib: -lc++ -framework Foundation -framework Appkit 
+    -fno-omit-frame-pointer
+    -fsanitize-undefined-trap-on-error
+    -fno-optimize-sibling-calls
+    -fsanitize=address
+  CCLib:
+    -lc++ -framework Foundation -framework Appkit 
   CSources:
     hayots_ide.h,
     hayots_app_delegate.h,
@@ -32,5 +38,4 @@ Executable hayots
     hayots_ml_stubs.c,
     hayots_app_delegate.c
   BuildDepends:
-    lwt.unix, cmdliner, yojson, bos, 
-    unix, lwt.preemptive, threads
+    lwt.unix, cmdliner, yojson
