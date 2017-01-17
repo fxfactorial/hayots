@@ -4,7 +4,8 @@
 
 #import <iostream>
 
-#include "hayots_ide.h"
+#import "hayots_ide.h"
+#import "MGSFragaria.h"
 
 @implementation Hayots_IDE : NSView
 
@@ -58,14 +59,15 @@
 
 -(void)setup_main_interface
 {
-  // NSTextView *v = [[NSTextView alloc] init];
-  // [v setTextColor:[NSColor greenColor]];
-  // [self addSubview:v];
-  // auto fr = self.frame;
-  // std::cout << [NSStringFromRect(fr) UTF8String] << "\n";
   NSTextField *f = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 50, 50)];
   f.stringValue = @"Hello world";
   [self addSubview:f];
+
+  MGSFragaria *fragaria = [[MGSFragaria alloc] init];
+  [fragaria setObject:self forKey:MGSFODelegate];
+  [fragaria setObject:@"Objective Caml" forKey:MGSFOSyntaxDefinitionName];
+  [fragaria embedInView:self];
+  [fragaria setString:@"(* Hayots OCaml IDE *)"];
 }
 
 -(void)speak_test

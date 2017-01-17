@@ -43,4 +43,19 @@ let _ =
     (fun () -> Unix.getcwd ())
     ()
 
+(* And and build the project *)
+let _ = Sys.(
+    let current = Unix.getcwd () in
+    if not (Sys.file_exists (current ^ "/" ^ "MGSFragaria.framework"))
+        then begin
+          ignore (
+            command "git clone https://github.com/mugginsoft/Fragaria";
+            command "xcodebuild -project Fragaria/Fragaria.xcodeproj \
+                     -alltargets -configuration Release";
+            command ("cp -R Fragaria/build/Release/MGSFragaria.framework " ^ current);
+            command "rm -rf Fragaria"
+          )
+        end
+  )
+
 let () = setup ();;

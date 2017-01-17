@@ -12,6 +12,10 @@ Plugins:      META (0.4), DevFiles (0.4)
 AlphaFeatures: ocamlbuild_more_args
 
 Description: OCaml IDE on OS X
+PostBuildCommand:
+  mkdir -p ~/Library/Frameworks;
+  rm -rf ~/Library/Frameworks/MGSFragaria.framework;
+  cp -R MGSFragaria.framework ~/Library/Frameworks
 
 Executable hayots
   Build$: system(macosx)
@@ -21,21 +25,22 @@ Executable hayots
   MainIs: hayots.ml
   NativeOpt:
     -g -w +a-4-40..42-44-45-48
-    -cclib -fsanitize=address -ccopt -fsanitize=address
+    -cclib -fsanitize=address
+    -ccopt -fsanitize=address
   CompiledObject: native
   CCOpt:
     -g -Wall -ObjC++ -std=c++14 -stdlib=libc++
+    -I$(PWD)/MGSFragaria.framework/Headers
     -fno-omit-frame-pointer
     -fsanitize-undefined-trap-on-error
     -fno-optimize-sibling-calls
     -fsanitize=address
   CCLib:
     -lc++
-    # This needs to come from setup.ml Environment var
     -F$(PWD)
     -framework Foundation
     -framework Appkit
-    # -framework MGSFragaria
+    -framework MGSFragaria
   CSources:
     hayots_ide.h,
     hayots_app_delegate.h,
