@@ -46,23 +46,41 @@
   return self;
 }
 
--(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode;
+-(NSDictionary*)read_command
 {
   NSError *error = nil;
+  uint8_t read_length[4];
+  [self.reader read:read_length maxLength:4];
+  int size = (int)(*read_length);
+  uint8_t buffer[size];
+  [self.reader read:buffer maxLength:size];
+  NSDictionary *json_command =
+    [NSJSONSerialization
+          JSONObjectWithData:[NSData dataWithBytes:buffer length:size]
+                     options:0
+                       error:&error];
+  return json_command;
+}
+
+-(void)send_reply
+{
+  NSError *error = nil;
+  NSData *d =
+    [NSJSONSerialization
+      dataWithJSONObject:@{@"foo": @"bar"} options:0 error:&error];
+  uint8_t buffer[4];
+  *buffer = (int)[d length];
+  [self.writer write:buffer maxLength:4];
+  [self.writer write:(const uint8_t * _Nonnull)[d bytes] maxLength:[d length]];
+}
+
+-(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode;
+{
 
   switch (eventCode) {
   case NSStreamEventHasBytesAvailable: {
-    uint8_t read_length;
-
-    [self.reader read:&read_length maxLength:1];
-    uint8_t buffer[read_length];
-    [self.reader read:buffer maxLength:read_length];
-    NSDictionary *json_command =
-      [NSJSONSerialization
-          JSONObjectWithData:[NSData dataWithBytes:buffer length:read_length]
-                     options:0
-                       error:&error];
-    NSLog(@"As a dict: %@", json_command);
+    NSLog(@"As a dict: %@", [self read_command]);
+    [self send_reply];
     break;
   }
   case NSStreamEventEndEncountered:
@@ -72,7 +90,6 @@
     NSLog(@"What is this none event");
     break;
   case NSStreamEventOpenCompleted:
-    // The streams were opened
     break;
   case NSStreamEventErrorOccurred:
     NSLog(@"Event error");
