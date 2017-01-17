@@ -38,4 +38,4 @@ Executable hayots
     hayots_ml_stubs.c,
     hayots_app_delegate.c
   BuildDepends:
-    lwt.unix, cmdliner, yojson
+    lwt.unix, cmdliner, yojson, lwt.ppx

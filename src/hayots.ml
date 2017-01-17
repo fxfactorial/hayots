@@ -54,7 +54,6 @@ let () =
       let hayots = new hayots parent_sock in
       hayots#send_message {|{"command":"something"}|} >>= fun () ->
       hayots#receive_reply >>= fun reply ->
-
       Lwt_io.printlf "Reply: %s" reply >>= fun () ->
       Lwt_io.flush_all () >>= fun () ->
       forever ()
