@@ -34,8 +34,11 @@ Executable hayots
   CSources:
     hayots_ide.h,
     hayots_app_delegate.h,
+    hayots_app_dispatcher.h,
+    hayots_app_dispatcher.c,
     hayots_ide.c,
     hayots_ml_stubs.c,
     hayots_app_delegate.c
   BuildDepends:
-    lwt.unix, cmdliner, yojson, lwt.ppx
+    lwt.unix, cmdliner, yojson,
+    lwt.ppx, lwt.preemptive, threads

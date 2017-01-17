@@ -58,9 +58,13 @@
 
 -(void)setup_main_interface
 {
-  NSTextView *v = [[NSTextView alloc] init];
-  [v setTextColor:[NSColor greenColor]];
-  [self addSubview:v];
+  // NSTextView *v = [[NSTextView alloc] init];
+  // [v setTextColor:[NSColor greenColor]];
+  // [self addSubview:v];
+
+  NSTextField *f = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 50, 50)];
+  f.stringValue = @"Hello world";
+  [self addSubview:f];
 }
 
 -(void)speak_test

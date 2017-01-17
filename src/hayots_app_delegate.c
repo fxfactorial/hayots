@@ -1,6 +1,7 @@
 // -*- objc -*-
 
 #import <Cocoa/Cocoa.h>
+#import <iostream>
 
 #include "hayots_app_delegate.h"
 #include "hayots_ide.h"
@@ -16,9 +17,12 @@
     | NSWindowStyleMaskClosable
     | NSWindowStyleMaskMiniaturizable;
 
+  auto screen_frame = [[NSScreen mainScreen] frame];
   self.main_window =
     [[NSWindow alloc]
-      initWithContentRect:NSMakeRect(0, 0, 500, 600)
+      initWithContentRect:NSMakeRect(100, 100,
+				     screen_frame.size.width - 200,
+				     screen_frame.size.height - 200)
 		styleMask:flags
 		  backing:NSBackingStoreBuffered
 		    defer:NO];
@@ -43,6 +47,11 @@
   // Make sure we're ahead of anything else.
   [self.main_window setLevel:NSNormalWindowLevel + 1];
 
+}
+
+- (void)applicationWillTerminate:(NSApplication *)application
+{
+  kill(self.ml_dispatch.ocaml_child_pid, 5);
 }
 
 -(void)applicationWillResignActive:(id)whatever

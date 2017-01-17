@@ -46,13 +46,16 @@ let () =
     match pid with
     (* Parent process *)
     | pid when pid > 0 ->
-      (* Never returns *)
       init_ide (Obj.magic (Lwt_unix.unix_file_descr gui_sock))
       |> Lwt.return
     | pid when pid = 0 ->
-      Lwt_unix.sleep 1.5 >>= fun () ->
+      (* Child needs to tell parent its PID to properly close child,
+         give NSApplication a chance to properly setup *)
+      Lwt_unix.sleep 1.0 >>= fun () ->
       let hayots = new hayots parent_sock in
-      hayots#send_message {|{"command":"something"}|} >>= fun () ->
+      `Assoc [("child-pid", `Int (Unix.getpid ()))]
+      |> Yojson.Basic.to_string
+      |> hayots#send_message >>= fun () ->
       hayots#receive_reply >>= fun reply ->
       Lwt_io.printlf "Reply: %s" reply >>= fun () ->
       Lwt_io.flush_all () >>= fun () ->
