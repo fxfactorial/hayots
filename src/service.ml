@@ -21,17 +21,3 @@ class utop = object
     |> Lwt_stream.iter_s (fun s -> Lwt_io.printlf "%s" s)
 
 end
-
-(* class nvim = object *)
-(*   val handle = *)
-(*     Lwt_process.open_process *)
-(*       ("nvim", [|"nvim"; "--embed"; "-u"; "NONE"|]) *)
-
-(*   val api_info = *)
-(*     Lwt_process.pread ("nvim", [|"nvim"; "--api-info"|]) >>= fun s -> *)
-(*     Lwt.return s *)
-
-(*      (\* method write s = *\) *)
-(*      (\*   Msgpack.MsgpackCore. *\) *)
-
-(* end *)

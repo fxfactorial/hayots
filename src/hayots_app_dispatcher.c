@@ -54,11 +54,18 @@
 	[nvim launch];
 
 	auto *nvim_read_handle = [nvim_pipe_out fileHandleForReading];
-	auto *nvim_write_handle = [nvim_pipe_in fileHandleForWriting];
-
+	NSFileHandle *nvim_write_handle = [nvim_pipe_in fileHandleForWriting];
+	uint32_t msgid = 0;
+	NSData *message = [@[@(0), @(msgid), @"nvim_ui_attach", @[@(400), @(600)]]
+			    messagePack];
 	// while (true) {
-	//   sleep(2);
-	//   std::cout << "Hello ping\n";
+	//   [nvim_write_handle writeData:message];
+	//   NSLog(@"Wrote");
+	//   NSData *reply = [nvim_read_handle readDataToEndOfFile];
+	//   NSLog(@"Read back?");
+	//   NSDictionary *reply_dict = [reply messagePackParse];
+	//   NSLog(@"Reply:%@", reply_dict);
+	//   break;
 	// }
 
     });
@@ -105,7 +112,6 @@
   NSLog(@"Command dict: %@", dict);
   NSNumber *n = [dict objectForKey:@"child-pid"];
   if (n) self.ocaml_child_pid = [n intValue];
-
 }
 
 -(void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode;
