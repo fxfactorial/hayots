@@ -34,7 +34,32 @@
 	auto *file = [pipe fileHandleForReading];
 	NSData *data = [file readDataToEndOfFile];
 	NSDictionary *d = [data messagePackParse];
-	NSLog(@"TEST: %@", d);
+
+	NSError *error = nil;
+	NSData *pretty =
+	  [NSJSONSerialization
+	    dataWithJSONObject:d
+		       options:NSJSONWritingPrettyPrinted
+			 error:&error];
+
+	// Do a separate loop for communicating with nvim
+	NSTask *nvim = [NSTask new];
+	NSPipe *nvim_pipe_out = [NSPipe pipe];
+	NSPipe *nvim_pipe_in = [NSPipe pipe];
+	[nvim setLaunchPath: @"/bin/bash"];
+	[nvim setStandardOutput:nvim_pipe_out];
+	[nvim setStandardInput:nvim_pipe_in];
+
+	[nvim setArguments:@[@"-c", @"nvim --embed"]];
+	[nvim launch];
+
+	auto *nvim_read_handle = [nvim_pipe_out fileHandleForReading];
+	auto *nvim_write_handle = [nvim_pipe_in fileHandleForWriting];
+
+	// while (true) {
+	//   sleep(2);
+	//   std::cout << "Hello ping\n";
+	// }
 
     });
 
