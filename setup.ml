@@ -60,14 +60,17 @@ let _ = Sys.(
   )
 
 (* Get the msgpack objc lib *)
-(* let _ = Sys.( *)
-(*     if not (Sys.file_exists (current ^ "/" ^ "msgpack-objectivec")) *)
-(*     then begin *)
-(*       ignore ( *)
-(*         command "git clone https://github.com/msgpack/msgpack-objectivec"; *)
-(*       ) *)
-(*     end *)
-(*   ) *)
+let _ = Sys.(
+    if not (Sys.file_exists (current ^ "/" ^ "msgpack-objectivec"))
+    then begin
+      ignore (
+        command "git clone https://github.com/fxfactorial/msgpack-objectivec";
+        command "make -C msgpack-objectivec objc_library";
+        command "cp msgpack-objectivec/libmsgpack-objc.dylib .";
+        command "make -C msgpack-objectivec clean";
+      )
+    end
+  )
 
 
 let () = setup ();;

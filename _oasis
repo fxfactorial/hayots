@@ -31,13 +31,15 @@ Executable hayots
   CCOpt:
     -g -Wall -ObjC++ -std=c++14 -stdlib=libc++
     -I$(PWD)/MGSFragaria.framework/Headers
+    -I$(PWD)/msgpack-objectivec
     -fno-omit-frame-pointer
     -fsanitize-undefined-trap-on-error
     -fno-optimize-sibling-calls
     -fsanitize=address
   CCLib:
     -lc++
-    -lmsgpackc
+    -L$(PWD)
+    -lmsgpack-objc
     -F$(PWD)
     -framework Foundation
     -framework Appkit

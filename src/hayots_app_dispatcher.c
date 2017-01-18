@@ -4,7 +4,7 @@
 
 #import <iostream>
 
-#import <msgpack.h>
+#import "MessagePack.h"
 
 #import "hayots_app_dispatcher.h"
 
@@ -21,6 +21,23 @@
 			   forMode:NSDefaultRunLoopMode];
     [self.reader open];
     [self.writer open];
+
+    auto queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+
+    dispatch_async(queue, ^{
+	auto *pipe = [NSPipe pipe];
+	NSTask *t = [[NSTask alloc] init];
+	[t setLaunchPath: @"/bin/bash"];
+	[t setStandardOutput:pipe];
+	[t setArguments:@[@"-c", @"nvim --api-info"]];
+	[t launch];
+	auto *file = [pipe fileHandleForReading];
+	NSData *data = [file readDataToEndOfFile];
+	NSDictionary *d = [data messagePackParse];
+	NSLog(@"TEST: %@", d);
+
+    });
+
   }
   return self;
 }

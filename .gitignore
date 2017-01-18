@@ -14,3 +14,5 @@ api.docdir
 _tests/*
 testapi.c
 MGSFragaria.framework/
+libmsgpack-objc.dylib
+msgpack-objectivec/
