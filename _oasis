@@ -37,6 +37,7 @@ Executable hayots
     -fsanitize=address
   CCLib:
     -lc++
+    -lmsgpackc
     -F$(PWD)
     -framework Foundation
     -framework Appkit
@@ -51,4 +52,6 @@ Executable hayots
     hayots_app_delegate.c
   BuildDepends:
     lwt.unix, cmdliner, yojson,
-    lwt.ppx, lwt.preemptive, threads
+    lwt.ppx, lwt.preemptive,
+    threads, ocp-indent.lib,
+    msgpack

@@ -12,3 +12,5 @@ Just type `make`, then try it with `./hayots.native`
 3. Use framework in build
 4. `cp -R MGSFragaria.framework ~/Library/Frameworks` (better with
    `install_name_tool`)
+5. Have the msgpack library installed, can install with `opam
+   depext` for `brew install msgpack`.

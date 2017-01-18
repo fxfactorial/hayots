@@ -4,6 +4,8 @@
 
 #import <iostream>
 
+#import <msgpack.h>
+
 #import "hayots_app_dispatcher.h"
 
 @implementation Dispatcher

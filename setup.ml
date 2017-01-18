@@ -43,9 +43,10 @@ let _ =
     (fun () -> Unix.getcwd ())
     ()
 
-(* And and build the project *)
+let current = Unix.getcwd ()
+
+(* Get the Code Editor *)
 let _ = Sys.(
-    let current = Unix.getcwd () in
     if not (Sys.file_exists (current ^ "/" ^ "MGSFragaria.framework"))
         then begin
           ignore (
@@ -57,5 +58,16 @@ let _ = Sys.(
           )
         end
   )
+
+(* Get the msgpack objc lib *)
+(* let _ = Sys.( *)
+(*     if not (Sys.file_exists (current ^ "/" ^ "msgpack-objectivec")) *)
+(*     then begin *)
+(*       ignore ( *)
+(*         command "git clone https://github.com/msgpack/msgpack-objectivec"; *)
+(*       ) *)
+(*     end *)
+(*   ) *)
+
 
 let () = setup ();;
